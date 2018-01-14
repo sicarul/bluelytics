@@ -6,7 +6,7 @@ from decimal import *
 @json_response
 def latest(request):
     max_sources = map(convDolar, maxSources())
-    sources_blue = filter(lambda x: x['source'] != 'oficial',max_sources)
+    sources_blue = filter(lambda x: x['source'] == 'ambito_oficial',max_sources)
     source_oficial = filter(lambda x: x['source'] == 'oficial',max_sources)[0]
 
     euro = Currency.objects.filter(code__exact='EUR')[0]
