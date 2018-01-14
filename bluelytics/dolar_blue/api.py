@@ -19,7 +19,7 @@ def all_prices():
   all_sources = Source.objects.all()
   allPrices = []
   for src in all_sources:
-    if str(src) != 'la_nacion':
+    if str(src) == 'ambito_financiero' or str(src) == 'oficial':
         today = DolarBlue.objects.filter(source__exact=src).order_by('-date').first()
         dateCalc = today.date.replace(hour=3, minute=0, second=0)
         yesterday = DolarBlue.objects.filter(source__exact=src, date__lt=dateCalc).order_by('-date').first()
