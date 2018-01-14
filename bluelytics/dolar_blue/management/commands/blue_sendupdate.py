@@ -71,7 +71,7 @@ class Command(BaseCommand):
         avg_blue = {
             'value_sell': median(map(lambda x: x['value_sell'], only_blue))
         }
-        avg_blue['value_buy'] = avg_blue['value_sell'] * Decimal(buy_multiplier)
+        avg_blue['value_buy'] = avg_blue['value_sell'] * buy_multiplier
         avg_blue['value_avg'] = (avg_blue['value_buy'] + avg_blue['value_sell']) / 2
         oficial = only_oficial[0]
 
