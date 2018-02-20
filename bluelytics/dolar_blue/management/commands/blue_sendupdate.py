@@ -66,7 +66,7 @@ class Command(BaseCommand):
 
     def prepare_data(self):
         last_data = map(convDolar, maxSources())
-        only_blue = filter(lambda x: x['source'] != 'oficial', last_data)
+        only_blue = filter(lambda x: x['source'] == 'ambito_financiero',last_data)
         only_oficial = filter(lambda x: x['source'] == 'oficial', last_data)
         avg_blue = {
             'value_sell': median(map(lambda x: x['value_sell'], only_blue))
