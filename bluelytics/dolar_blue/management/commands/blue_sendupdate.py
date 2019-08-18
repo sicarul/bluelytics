@@ -26,7 +26,7 @@ def send_request_twitter(msg):
         'media[thumbnail]': 'http://api.bluelytics.com.ar/social_img/twitter.png'
     }
     r = requests.post("https://api.bufferapp.com/1/updates/create.json", data=payload)
-
+    print(r.status_code)
 
 def send_request_facebook(msg):
     from buffer_apikeys import buffer_accesstoken
@@ -42,7 +42,7 @@ def send_request_facebook(msg):
         'media[thumbnail]': 'http://api.bluelytics.com.ar/social_img/facebook.png'
     }
     r = requests.post("https://api.bufferapp.com/1/updates/create.json", data=payload)
-
+    print(r.status_code)
 
 def convert_presentacion(values):
     return {
@@ -85,10 +85,10 @@ class Command(BaseCommand):
 
 
     def twitter_update(self):
-        send_request_twitter("Blue a %s, visita http://www.bluelytics.com.ar - Bajate la app https://play.google.com/store/apps/details?id=com.ionicframework.bluelyticsmobile363312" % self.dolar['blue']['sell'])
+        send_request_twitter("Blue a %s, visita http://www.bluelytics.com.ar" % self.dolar['blue']['sell'])
 
     def facebook_update(self):
-        send_request_facebook("Blue a %s\n\nVisita http://www.bluelytics.com.ar - Bajate la app https://play.google.com/store/apps/details?id=com.ionicframework.bluelyticsmobile363312" % self.dolar['blue']['sell'])
+        send_request_facebook("Blue a %s\n\nVisita http://www.bluelytics.com.ar" % self.dolar['blue']['sell'])
 
     def generate_img(self):
         PATH_SCRIPT_IMG = '/home/sicarul/blueimg/'
