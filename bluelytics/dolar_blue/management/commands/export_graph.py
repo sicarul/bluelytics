@@ -22,9 +22,9 @@ def last_prices_each_day():
 
 def api_mini_dolar(d):
     return {
-    'date': d['date'],
-    'value': d['value_sell'],
-    'source': d['source_id']
+    'source': d[0],
+    'date': d[1],
+    'value': d[3] #value_sell
     }
 
 class Command(BaseCommand):
