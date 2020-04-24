@@ -7,6 +7,5 @@ urlpatterns = patterns('',
 
     url(r'^v2/latest$', new_api.latest, name='latest'),
 
-    url(r'^api/last_price$', api.lastprice, name='api_lastprice'),
-    url(r'^api/all_currencies$', api.all_currencies, name='api_all_currencies')
+    url(r'^api/last_price$', api.lastprice, name='api_lastprice')
 )

@@ -34,17 +34,3 @@ def convDolar(e):
         'value_sell': e.value_sell,
         'value_avg': e.value_avg,
         'source': e.source.source}
-
-def maxCurrencies():
-  all_currencies = Currency.objects.all()
-  maxCurrencies = []
-  for cur in all_currencies:
-    record = CurrencyValue.objects.filter(curr__exact=cur).order_by('-date').first()
-    maxCurrencies.append(record)
-
-  return maxCurrencies
-
-def convCurr(e):
-  return {'value': e.value,
-        'code': e.curr.code,
-        'name': e.curr.name}

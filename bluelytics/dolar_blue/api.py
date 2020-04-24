@@ -6,7 +6,6 @@ from decimal import Decimal
 
 from dolar_blue.models import DolarBlue, Source
 from dolar_blue.utils import DecimalEncoder, arg, mean
-from dolar_blue.calculations import maxCurrencies, convCurr
 
 def api_dolar(d):
   return {'date': d.date.astimezone(arg).isoformat(),
@@ -81,9 +80,3 @@ def lastprice(request):
   output+=allPrices
 
   return HttpResponse(json.dumps(output, cls=DecimalEncoder), mimetype="application/json")
-
-def all_currencies(request):
-  max_currencies = map(convCurr, maxCurrencies())
-  max_currencies.sort(key=itemgetter('code'))
-
-  return HttpResponse(json.dumps(max_currencies, cls=DecimalEncoder), mimetype="application/json")
