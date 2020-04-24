@@ -5,7 +5,7 @@ from operator import itemgetter
 from decimal import Decimal
 
 from dolar_blue.models import DolarBlue, Source
-from dolar_blue.utils import DecimalEncoder, arg, median, buy_multiplier
+from dolar_blue.utils import DecimalEncoder, arg, mean, buy_multiplier
 from dolar_blue.calculations import maxCurrencies, convCurr
 
 def api_dolar(d):

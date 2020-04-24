@@ -5,6 +5,9 @@ arg = pytz.timezone("America/Argentina/Buenos_Aires")
 
 buy_multiplier = decimal.Decimal(0.965)
 
+def mean(numbers):
+    return float(sum(numbers)) / max(len(numbers), 1)
+    
 def median(lst):
     lst = sorted(lst)
     import math
