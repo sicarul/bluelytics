@@ -17,7 +17,8 @@ def maxCurrencies():
   maxCurrencies = []
   for cur in all_currencies:
     record = CurrencyValue.objects.filter(curr__exact=cur).order_by('-date').first()
-    maxCurrencies.append(record)
+    if record.curr.code not in ['ARS', 'USD']:
+        maxCurrencies.append(record)
 
   return maxCurrencies
 
