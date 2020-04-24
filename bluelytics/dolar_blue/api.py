@@ -62,17 +62,14 @@ def avgBlue(input):
 
 def addOficial(input, perc, newname):
   mult = (100 + perc) / Decimal(100)
-  print mult
-  for b in input:
-    if b['name'] == 'oficial':
-      return {'date': b['date'],
-        'compra': b['compra'] * mult,
-        'venta':  b['venta'] * mult,
-        'compra_ayer': b['compra_ayer'] * mult,
-        'venta_ayer':  b['venta_ayer'] * mult,
-        'name': 'oficial_' + str(perc),
-        'long_name': newname
-          }
+  return {'date': b['date'],
+    'compra': b['compra'] * mult,
+    'venta':  b['venta'] * mult,
+    'compra_ayer': b['compra_ayer'] * mult,
+    'venta_ayer':  b['venta_ayer'] * mult,
+    'name': 'oficial_' + str(perc),
+    'long_name': newname
+      }
 
 
 def lastprice(request):
