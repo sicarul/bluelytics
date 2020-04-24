@@ -4,7 +4,7 @@ from django.utils import timezone
 from dolar_blue.models import DolarBlue, Source
 from dolar_blue.calculations import maxSources, convDolar
 
-from dolar_blue.utils import median, buy_multiplier
+from dolar_blue.utils import median
 
 from decimal import Decimal
 import sys, subprocess, os, datetime
@@ -71,7 +71,6 @@ class Command(BaseCommand):
         avg_blue = {
             'value_sell': median(map(lambda x: x['value_sell'], only_blue))
         }
-        avg_blue['value_buy'] = avg_blue['value_sell'] * buy_multiplier
         avg_blue['value_avg'] = (avg_blue['value_buy'] + avg_blue['value_sell']) / 2
         oficial = only_oficial[0]
 

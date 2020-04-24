@@ -5,7 +5,7 @@ from operator import itemgetter
 from decimal import Decimal
 
 from dolar_blue.models import DolarBlue, Source
-from dolar_blue.utils import DecimalEncoder, arg, mean, buy_multiplier
+from dolar_blue.utils import DecimalEncoder, arg, mean
 from dolar_blue.calculations import maxCurrencies, convCurr
 
 def api_dolar(d):
@@ -25,15 +25,21 @@ def all_prices():
         yesterday = DolarBlue.objects.filter(source__exact=src, date__lt=dateCalc).order_by('-date').first()
         if not yesterday:
           yesterday = today
-        allPrices.append({
-          'date': today.date.astimezone(arg).isoformat(),
-          'compra': today.value_buy,
-          'venta': today.value_sell,
-          'compra_ayer': yesterday.value_buy,
-          'venta_ayer': yesterday.value_sell,
-          'name': today.source.source,
-          'long_name': today.source.description
-          })
+        ret = {
+           'date': today.date.astimezone(arg).isoformat(),
+           'compra': today.value_buy,
+           'venta': today.value_sell,
+           'compra_ayer': yesterday.value_buy,
+           'venta_ayer': yesterday.value_sell,
+           'name': today.source.source,
+           'long_name': today.source.description
+           }
+        allPrices.append(ret)
+
+        if str(src) == 'oficial':
+            allPrices.append(
+            addOficial(ret, 30, 'Dolar Solidario')
+            )
 
   return allPrices
 
@@ -46,9 +52,9 @@ def avgBlue(input):
   d = 0
   blue = filter(lambda x: x['name'] in ['ambito_financiero', 'invertir_online'], input)
   return {'date': datetime.datetime.now().isoformat(),
-        'compra': mean(map(lambda x: x['venta'], blue)),
+        'compra': mean(map(lambda x: x['compra'], blue)),
         'venta': mean(map(lambda x: x['venta'], blue)),
-        'compra_ayer': mean(map(lambda x: x['venta_ayer'], blue)),
+        'compra_ayer': mean(map(lambda x: x['compra_ayer'], blue)),
         'venta_ayer': mean(map(lambda x: x['venta_ayer'], blue)),
         'name': 'blue',
         'long_name': 'Dolar Blue'
