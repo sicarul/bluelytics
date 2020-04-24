@@ -19,7 +19,7 @@ def all_prices():
   all_sources = Source.objects.all()
   allPrices = []
   for src in all_sources:
-    if str(src) == 'ambito_financiero' or str(src) == 'oficial':
+    if str(src) in ['ambito_financiero', 'oficial', 'invertir_online']:
         today = DolarBlue.objects.filter(source__exact=src).order_by('-date').first()
         dateCalc = today.date.replace(hour=3, minute=0, second=0)
         yesterday = DolarBlue.objects.filter(source__exact=src, date__lt=dateCalc).order_by('-date').first()
@@ -44,12 +44,12 @@ def avgBlue(input):
   c_a = 0
   v_a = 0
   d = 0
-  blue = filter(lambda x: x['name'] == 'ambito_financiero', input)
+  blue = filter(lambda x: x['name'] in ['ambito_financiero', 'invertir_online'], input)
   return {'date': datetime.datetime.now().isoformat(),
-        'compra': median(map(lambda x: x['venta'], blue)) * buy_multiplier,
-        'venta': median(map(lambda x: x['venta'], blue)),
-        'compra_ayer': median(map(lambda x: x['venta_ayer'], blue))* buy_multiplier,
-        'venta_ayer': median(map(lambda x: x['venta_ayer'], blue)),
+        'compra': mean(map(lambda x: x['venta'], blue)) * buy_multiplier,
+        'venta': mean(map(lambda x: x['venta'], blue)),
+        'compra_ayer': mean(map(lambda x: x['venta_ayer'], blue))* buy_multiplier,
+        'venta_ayer': mean(map(lambda x: x['venta_ayer'], blue)),
         'name': 'blue',
         'long_name': 'Dolar Blue'
           }
