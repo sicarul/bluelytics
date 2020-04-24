@@ -6,7 +6,7 @@ from decimal import *
 @json_response
 def latest(request):
     max_sources = map(convDolar, maxSources())
-    sources_blue = filter(lambda x: x['source'] == 'ambito_financiero',max_sources)
+    sources_blue = filter(lambda x: x['source'] in ['ambito_financiero', 'invertir_online'],max_sources)
     source_oficial = filter(lambda x: x['source'] == 'oficial',max_sources)[0]
 
     euro = Currency.objects.filter(code__exact='EUR')[0]
@@ -16,6 +16,7 @@ def latest(request):
     euro_sell = euro_avg * Decimal(0.97)
     last_date = None
 
+    blue_buy = Decimal(median(map(lambda x: x['value_buy'], sources_blue)))
     blue_sell = Decimal(median(map(lambda x: x['value_sell'], sources_blue)))
     blue_avg = (blue_sell + blue_buy) / 2
 
