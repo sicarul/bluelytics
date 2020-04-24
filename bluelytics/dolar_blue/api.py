@@ -46,9 +46,9 @@ def avgBlue(input):
   d = 0
   blue = filter(lambda x: x['name'] in ['ambito_financiero', 'invertir_online'], input)
   return {'date': datetime.datetime.now().isoformat(),
-        'compra': mean(map(lambda x: x['venta'], blue)) * buy_multiplier,
+        'compra': mean(map(lambda x: x['venta'], blue)),
         'venta': mean(map(lambda x: x['venta'], blue)),
-        'compra_ayer': mean(map(lambda x: x['venta_ayer'], blue))* buy_multiplier,
+        'compra_ayer': mean(map(lambda x: x['venta_ayer'], blue)),
         'venta_ayer': mean(map(lambda x: x['venta_ayer'], blue)),
         'name': 'blue',
         'long_name': 'Dolar Blue'

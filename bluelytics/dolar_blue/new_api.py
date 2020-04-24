@@ -27,3 +27,9 @@ def latest(request):
     response['oficial_euro'] = {'value_buy': source_oficial['value_buy']/euro_buy, 'value_avg': source_oficial['value_avg']/euro_avg, 'value_sell': source_oficial['value_sell']/euro_sell}
     response['blue_euro'] = {'value_buy': blue_buy/euro_buy, 'value_avg': blue_avg/euro_avg, 'value_sell': blue_sell/euro_sell}
     return response
+
+@json_response
+def currency(request):
+    if 'code' in HttpRequest.GET:
+        curr = CurrencyValue.objects.filter(curr__exact=HttpRequest.GET['code']).order_by('-date').first()
+        return curr
