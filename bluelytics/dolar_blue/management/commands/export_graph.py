@@ -23,7 +23,7 @@ def last_prices_each_day():
 def api_mini_dolar(d):
     return {
     'source': d[0],
-    'date': d[1],
+    'date': d[1].strftime("%Y-%m-%d"),
     'value': d[3] #value_sell
     }
 
