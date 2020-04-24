@@ -5,7 +5,12 @@ from django.utils import timezone
 from decimal import Decimal
 import sys, datetime, json
 from dolar_blue.utils import DecimalEncoder, arg
+from operator import itemgetter
 
+def convCurr(e):
+  return {'value': e.value,
+        'code': e.curr.code,
+        'name': e.curr.name}
 
 def maxCurrencies():
   all_currencies = Currency.objects.all()
@@ -25,10 +30,11 @@ class Command(BaseCommand):
         if len(args) != 1:
             raise CommandError('Incorrect arguments')
         try:
-            output = maxCurrencies()
+            max_currencies = map(convCurr, maxCurrencies())
+            max_currencies.sort(key=itemgetter('code'))
 
             with open(args[0], 'w') as j:
-                json.dump(output, j, cls=DecimalEncoder)
+                json.dump(max_currencies, j, cls=DecimalEncoder)
 
             self.stdout.write('Successfully exported currency data')
         except Exception:
