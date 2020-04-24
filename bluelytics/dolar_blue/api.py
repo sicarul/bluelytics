@@ -37,9 +37,7 @@ def all_prices():
         allPrices.append(ret)
 
         if str(src) == 'oficial':
-            allPrices.append(
-            addOficial(ret, 30, 'Dolar Solidario')
-            )
+            allPrices.append(addOficial(ret, 30, 'Dolar Solidario'))
 
   return allPrices
 
@@ -60,16 +58,17 @@ def avgBlue(input):
         'long_name': 'Dolar Blue'
           }
 
-def addOficial(input, perc, newname):
+def addOficial(data, perc, newname):
   mult = (100 + perc) / Decimal(100)
-  return {'date': input['date'],
-    'compra': input['compra'] * mult,
-    'venta':  input['venta'] * mult,
-    'compra_ayer': input['compra_ayer'] * mult,
-    'venta_ayer':  input['venta_ayer'] * mult,
+  return {
+    'date': data['date'],
+    'compra': data['compra'] * mult,
+    'venta':  data['venta'] * mult,
+    'compra_ayer': data['compra_ayer'] * mult,
+    'venta_ayer':  data['venta_ayer'] * mult,
     'name': 'oficial_' + str(perc),
     'long_name': newname
-      }
+    }
 
 
 def lastprice(request):
