@@ -4,7 +4,7 @@ from django.utils import timezone
 from dolar_blue.models import DolarBlue, Source
 from dolar_blue.calculations import maxSources, convDolar
 
-from dolar_blue.utils import median
+from dolar_blue.utils import mean
 
 from decimal import Decimal
 import sys, subprocess, os, datetime
@@ -44,17 +44,31 @@ def send_request_facebook(msg):
     r = requests.post("https://api.bufferapp.com/1/updates/create.json", data=payload)
     print(r.status_code)
 
+def send_request_instagram(msg):
+    from buffer_apikeys import buffer_accesstoken
+
+    payload = {
+        'access_token': buffer_accesstoken,
+        'text': msg,
+        'profile_ids[]': '5eaee89c594d230afc4f3418',
+        'shorten': 'false',
+        'top': 'true',
+        'now': 'true',
+        'media[photo]': 'http://api.bluelytics.com.ar/social_img/instagram.png',
+        'media[thumbnail]': 'http://api.bluelytics.com.ar/social_img/instagram.png'
+    }
+    r = requests.post("https://api.bufferapp.com/1/updates/create.json", data=payload)
+    print(r.status_code)
+
 def convert_presentacion(values):
     return {
         'buy': "%.2f" % values['value_buy'],
-        'avg': "%.2f" % values['value_avg'],
         'sell': "%.2f" % values['value_sell']
     }
 
 def multiply(values, m):
     return {
         'value_buy': m * values['value_buy'],
-        'value_avg': m * values['value_avg'],
         'value_sell': m * values['value_sell']
     }
 
@@ -66,19 +80,17 @@ class Command(BaseCommand):
 
     def prepare_data(self):
         last_data = map(convDolar, maxSources())
-        only_blue = filter(lambda x: x['source'] == 'ambito_financiero',last_data)
+        only_blue = filter(lambda x: x['source'] in ['ambito_financiero', 'invertir_online'],last_data)
         only_oficial = filter(lambda x: x['source'] == 'oficial', last_data)
         avg_blue = {
-            'value_sell': median(map(lambda x: x['value_sell'], only_blue))
+            'value_sell': mean(map(lambda x: x['value_sell'], only_blue)),
+            'value_buy': mean(map(lambda x: x['value_sell'], only_blue))
         }
-        avg_blue['value_avg'] = (avg_blue['value_buy'] + avg_blue['value_sell']) / 2
         oficial = only_oficial[0]
 
         self.dolar = {}
         self.dolar['blue'] = convert_presentacion(avg_blue)
         self.dolar['oficial'] = convert_presentacion(oficial)
-        self.dolar['ahorro'] = convert_presentacion(multiply(oficial, Decimal('1.20')))
-        self.dolar['turismo'] = convert_presentacion(multiply(oficial, Decimal('1.35')))
 
         self.avg_blue = avg_blue
 
@@ -96,11 +108,7 @@ class Command(BaseCommand):
             str(self.dolar['blue']['buy']),
             str(self.dolar['blue']['sell']),
             str(self.dolar['oficial']['buy']),
-            str(self.dolar['oficial']['sell']),
-            str(self.dolar['ahorro']['buy']),
-            str(self.dolar['ahorro']['sell']),
-            str(self.dolar['turismo']['buy']),
-            str(self.dolar['turismo']['sell']),
+            str(self.dolar['oficial']['sell'])
         ])
 
     def handle(self, *args, **options):
@@ -115,6 +123,8 @@ class Command(BaseCommand):
                 self.twitter_update()
             if(social_network == 'facebook' or social_network == 'all'):
                 self.facebook_update()
+            if(social_network == 'instagram' or social_network == 'all'):
+                self.instagram_update()
 
 
         except Exception:
