@@ -87,7 +87,7 @@ class Command(BaseCommand):
             'value_buy': mean(map(lambda x: x['value_buy'], only_blue))
         }
         oficial = only_oficial[0]
-        oficial['value_sell']=oficial['value_sell']*1.3
+        oficial['value_sell']=oficial['value_sell']*Decimal(1.3)
 
         self.dolar = {}
         self.dolar['blue'] = convert_presentacion(avg_blue)
