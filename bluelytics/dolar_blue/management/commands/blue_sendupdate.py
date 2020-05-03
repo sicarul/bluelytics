@@ -101,6 +101,9 @@ class Command(BaseCommand):
     def facebook_update(self):
         send_request_facebook("Blue a %s\n\nVisita http://www.bluelytics.com.ar" % self.dolar['blue']['sell'])
 
+    def instagram_update(self):
+        send_request_facebook("Blue a %s\n\nVisita http://www.bluelytics.com.ar" % self.dolar['blue']['sell'])
+
     def generate_img(self):
         PATH_SCRIPT_IMG = '/home/sicarul/blueimg/'
 
